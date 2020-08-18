@@ -10,6 +10,5 @@ import java.lang.annotation.*;
 public @interface FindBy {
     String locator();
     String itemLocator() default "";
-    boolean excludeFromSearch() default false;
 }
 

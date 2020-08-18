@@ -3,13 +3,12 @@ package com.MyTest.Pages;
 import com.MyTest.Annotations.Alias;
 import com.MyTest.Configuration;
 import com.MyTest.Driver;
-import com.MyTest.MyControlObject.Control;
+import com.MyTest.TestControlObject.Control;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.Augmenter;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.reflections.Reflections;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -63,31 +62,6 @@ public class Page {
         return this;
     }
 
-    public boolean isTextPresent(String text) {
-        String locator = String.format("//*[text()='%s' or contains(text(), '%s')]", text, text);
-        Control element = new Control(this, By.xpath(locator));
-        return element.exists();
-    }
-
-
-
-    public boolean isCurrent(long timeout) throws Exception {
-        Field[] fields = this.getClass().getFields();
-        for (Field field : fields) {
-            if (Control.class.isAssignableFrom(field.getType())) {
-                Control control = (Control) field.get(this);
-                if (!control.exists(timeout)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public boolean isCurrent() throws Exception {
-        return isCurrent(TIMEOUT);
-    }
-
     public Control onPage(String name) throws Exception {
         for (Field field : this.getClass().getFields()) {
             if (Control.class.isAssignableFrom(field.getType())) {
@@ -99,13 +73,17 @@ public class Page {
         }
         return null;
     }
+    public Control getExactPageText(String text) {
+        String locator = String.format("//*[text()='%s']", text);
+        Control element = new Control(this, By.xpath(locator));
+        return element;
+    }
 
-
-
-
-
-
-
+    public static byte[] captureScreenShot() throws IOException {
+        WebDriver augmentedDriver = new Augmenter().augment(Driver.current());
+        byte[] data = ((TakesScreenshot) augmentedDriver).getScreenshotAs(OutputType.BYTES);
+        return data;
+    }
 
 
 }

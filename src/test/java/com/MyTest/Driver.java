@@ -3,13 +3,6 @@ package com.MyTest;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
-
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
-
-
-import java.net.URL;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,8 +18,6 @@ public class Driver {
     private static final HashMap<String, Class<?>> driverMap = new HashMap<String, Class<?>>() {
         {
             put("chrome", ChromeDriver.class);
-            put("internet explorer", InternetExplorerDriver.class);
-
         }
     };
     public static void add(String browser, Capabilities capabilities) throws Exception {

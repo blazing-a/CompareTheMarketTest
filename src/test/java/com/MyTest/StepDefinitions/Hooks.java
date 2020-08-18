@@ -4,6 +4,7 @@ package com.MyTest.StepDefinitions;
 
 import com.MyTest.Configuration;
 import com.MyTest.Driver;
+import com.MyTest.Pages.Page;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -24,7 +25,14 @@ public class Hooks {
     }
     @After
     public void afterScenario(Scenario scenario) throws Exception {
+
+        fullScreenshot(scenario);
         Driver.current().quit();
+    }
+
+    public void fullScreenshot(Scenario scenario)throws Exception{
+        final byte[] screenshot = Page.captureScreenShot();
+        scenario.embed(screenshot, "image/png");
 
     }
 }

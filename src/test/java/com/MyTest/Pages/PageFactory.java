@@ -3,9 +3,7 @@ package com.MyTest.Pages;
 
 
 import com.MyTest.Annotations.FindBy;
-import com.MyTest.Annotations.SubItem;
-import com.MyTest.MyControlObject.Control;
-import org.apache.commons.lang3.ArrayUtils;
+import com.MyTest.TestControlObject.Control;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -40,15 +38,6 @@ public class PageFactory {
         return null;
     }
 
-    private static SubItem[] getSubItems(SubItem items[]) {
-        SubItem[] result = new SubItem[]{};
-        for (SubItem item : items) {
-            {
-                result = ArrayUtils.add(result, item);
-            }
-        }
-        return result;
-    }
 
     public static <T extends Page> T init(WebDriver driver, Class<T> pageClass)
             throws Exception {
@@ -69,9 +58,6 @@ public class PageFactory {
                                 page,
                                 toLocator(anno.locator()));
                 control.setItemLocatorText(anno.itemLocator());
-                SubItem[] items = field.getAnnotationsByType(SubItem.class);
-                control.addSubItems(getSubItems(items));
-                control.setExcludeFromSearch(anno.excludeFromSearch());
                 field.set(page, control);
             }
         }
